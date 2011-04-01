@@ -1,0 +1,15 @@
+*.class
+*~
+*.diff
+
+.project
+.classpath
+.settings
+.distfiles
+.scala_dependencies
+
+*.ipr
+*.iws
+.idea/*
+*.iml
+
