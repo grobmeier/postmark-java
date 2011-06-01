@@ -33,8 +33,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.joda.time.DateTime;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -162,7 +160,7 @@ public class PostmarkClient {
             logger.info("Message contents: " + messageContents);
 
             // Add JSON as payload to post request
-            StringEntity payload = new StringEntity(messageContents);
+            StringEntity payload = new StringEntity(messageContents, "UTF-8");
             method.setEntity(payload);
 
 
