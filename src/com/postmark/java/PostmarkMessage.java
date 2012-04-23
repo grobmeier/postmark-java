@@ -74,6 +74,9 @@ public class PostmarkMessage {
     @SerializedName("Headers")
     private List<NameValuePair> headers;
 
+    @SerializedName("Attachments")
+    private List<Attachment> attachments;
+
     @SkipMe
     private boolean isHTML;
 
@@ -266,6 +269,14 @@ public class PostmarkMessage {
      */
     public void setHeaders(List<NameValuePair> headers) {
         this.headers = headers;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     @Override
