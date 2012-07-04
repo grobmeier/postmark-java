@@ -32,6 +32,8 @@ package com.postmark.java;
 
 public class PostmarkException extends Exception {
 
+    private static final long serialVersionUID = 8742554283535762204L;
+
     private PostmarkResponse response;
 
     public PostmarkException(Throwable cause) {
