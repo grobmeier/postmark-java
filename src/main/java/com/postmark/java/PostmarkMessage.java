@@ -54,6 +54,10 @@ public class PostmarkMessage {
     @SerializedName("Cc")
     private String ccAddress;
 
+    // The email address to blind carbon copy to. This is optional.
+    @SerializedName("Bcc")
+    private String bccAddress;
+
     // The message subject line.
     @SerializedName("Subject")
     private String subject;
@@ -81,7 +85,7 @@ public class PostmarkMessage {
     private boolean isHTML;
 
 
-    public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) {
+    public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String bccAddress, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) {
 
         this.isHTML = isHTML;
 
@@ -89,6 +93,7 @@ public class PostmarkMessage {
         this.toAddress = toAddress;
         this.replyToAddress = replyToAddress;
         this.ccAddress = ccAddress;
+        this.bccAddress = bccAddress;
         this.subject = subject;
 
         if (isHTML)
@@ -101,9 +106,18 @@ public class PostmarkMessage {
         this.headers = (headers == null) ? new ArrayList<NameValuePair>() : headers;
     }
 
+
+    public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) {
+
+        this(fromAddress, toAddress, replyToAddress, ccAddress, null, subject, body, isHTML, tag, headers);
+
+    }
+
+
+
     public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String subject, String body, boolean isHTML, String tag) {
 
-        this(fromAddress, toAddress, replyToAddress, ccAddress, subject, body, isHTML, tag, null);
+        this(fromAddress, toAddress, replyToAddress, ccAddress, null, subject, body, isHTML, tag, null);
 
     }
 
@@ -115,6 +129,7 @@ public class PostmarkMessage {
         this.toAddress = message.toAddress;
         this.replyToAddress = message.replyToAddress;
         this.ccAddress = message.ccAddress;
+        this.bccAddress = message.bccAddress;
         this.subject = message.subject;
 
         this.htmlBody = message.htmlBody;
@@ -185,6 +200,20 @@ public class PostmarkMessage {
      */
     public void setCcAddress(String ccAddress) {
         this.ccAddress = ccAddress;
+    }
+
+    /**
+     * @return the bcc email address
+     */
+    public String getBccAddress() {
+        return bccAddress;
+    }
+
+    /**
+     * @param bccAddress The email address a blind carbon copy of the message is sent to
+     */
+    public void setBccAddress(String bccAddress) {
+        this.bccAddress = bccAddress;
     }
 
     /**
@@ -287,6 +316,7 @@ public class PostmarkMessage {
         PostmarkMessage that = (PostmarkMessage) o;
 
         if (ccAddress != null ? !ccAddress.equals(that.ccAddress) : that.ccAddress != null) return false;
+        if (bccAddress != null ? !bccAddress.equals(that.bccAddress) : that.bccAddress != null) return false;
         if (fromAddress != null ? !fromAddress.equals(that.fromAddress) : that.fromAddress != null) return false;
         if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
         if (htmlBody != null ? !htmlBody.equals(that.htmlBody) : that.htmlBody != null) return false;
@@ -306,6 +336,7 @@ public class PostmarkMessage {
         int result = fromAddress != null ? fromAddress.hashCode() : 0;
         result = 31 * result + (toAddress != null ? toAddress.hashCode() : 0);
         result = 31 * result + (ccAddress != null ? ccAddress.hashCode() : 0);
+        result = 31 * result + (bccAddress != null ? bccAddress.hashCode() : 0);
         result = 31 * result + (replyToAddress != null ? replyToAddress.hashCode() : 0);
         result = 31 * result + (subject != null ? subject.hashCode() : 0);
         result = 31 * result + (htmlBody != null ? htmlBody.hashCode() : 0);
@@ -322,6 +353,7 @@ public class PostmarkMessage {
         sb.append("{ fromAddress='").append(fromAddress).append('\'');
         sb.append(", toAddress='").append(toAddress).append('\'');
         sb.append(", ccAddress='").append(ccAddress).append('\'');
+        sb.append(", bccAddress='").append(bccAddress).append('\'');
         sb.append(", replyToAddress='").append(replyToAddress).append('\'');
         sb.append(", subject='").append(subject).append('\'');
 

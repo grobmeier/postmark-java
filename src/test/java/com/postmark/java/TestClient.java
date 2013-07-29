@@ -46,14 +46,15 @@ public class TestClient {
                 args[2],
                 args[3],
                 args[4],
-                false,
                 args[5],
+                false,
+                args[6],
                 headers);
 
 
         String apiKey = "POSTMARK_API_TEST";
-        if(args[6] != null)
-            apiKey = args[6];
+        if(args[7] != null)
+            apiKey = args[7];
             
 
         PostmarkClient client = new PostmarkClient(apiKey);
@@ -61,7 +62,7 @@ public class TestClient {
         try {
             client.sendMessage(message);
         } catch (PostmarkException pe) {
-            System.out.println("An error has occured : " + pe.getMessage());
+            System.out.println("An error has occurred : " + pe.getMessage());
         }
     }
 }
