@@ -28,14 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Postmark for Java
+ * Wrapper class for a Postmark message.
  * <p/>
  * This library can be used to leverage the postmarkapp.com functionality from a Java client
  * <p/>
  * http://github.com/jaredholdcroft/postmark-java
  */
-
-// Wrapper class for Postmark message
 public class PostmarkMessage {
 
     // The sender's email address.
@@ -70,7 +68,7 @@ public class PostmarkMessage {
     @SerializedName("TextBody")
     private String textBody;
 
-    // The message body, if the message is plain text.
+    // An optional tag than can be associated with the email.
     @SerializedName("Tag")
     private String tag;
 
@@ -273,14 +271,14 @@ public class PostmarkMessage {
     }
 
     /**
-     * @return the body of a plain text message
+     * @return the tag (an optional category) that is associated with this mail
      */
     public String getTag() {
         return tag;
     }
 
     /**
-     * @param tag The plain text body content of the message
+     * @param tag The tag (an optional category) that is associated with this mail
      */
     public void setTag(String tag) {
         this.tag = tag;
@@ -304,6 +302,11 @@ public class PostmarkMessage {
         return attachments;
     }
 
+    /**
+     * Lets you attach file. See {@link Attachment} for details.
+     *
+     * @param attachments list of attachments
+     */
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }

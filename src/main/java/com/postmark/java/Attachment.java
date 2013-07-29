@@ -22,6 +22,30 @@
 
 package com.postmark.java;
 
+/**
+ * Attachment for a message.<p/>
+ * Sample code:
+ * <pre>
+ * {@code
+ * Attachment attachment = new Attachment();
+ * attachment.setContentType("application/pdf");
+ * attachment.setName("SomethingAwesome.pdf");
+ *
+ * // convert file contents to base64
+ * File file = new File("SomethingAwesome.pdf");
+ * byte[] ba = new byte[(int) file.length()];
+ * FileInputStream fis = new FileInputStream(file);
+ * Fileis.read(ba);
+ * fis.close();
+ * attachment.setContent(new Base64().encodeToString(ba));
+ *
+ * // can handle multiple attachments
+ * Vector<Attachment> v = new Vector<Attachment>();
+ * v.add(attachment);
+ * message.setAttachments(v);
+ * }
+ * </pre>
+ */
 public class Attachment {
 	private String name;
 	private String contentType;
