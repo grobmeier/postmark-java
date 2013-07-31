@@ -59,6 +59,7 @@ public class PostmarkClient {
         gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter());
         gsonBuilder.setPrettyPrinting();
         gsonBuilder.setExclusionStrategies(new SkipMeExclusionStrategy(Boolean.class));
+        gsonBuilder.disableHtmlEscaping();
 
         logger.addHandler(new ConsoleHandler());
         logger.setLevel(Level.ALL);
