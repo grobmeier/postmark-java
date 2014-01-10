@@ -59,6 +59,7 @@ public class PostmarkClient {
         gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeTypeAdapter());
         gsonBuilder.setPrettyPrinting();
         gsonBuilder.setExclusionStrategies(new SkipMeExclusionStrategy(Boolean.class));
+        gsonBuilder.disableHtmlEscaping();
 
         logger.addHandler(new ConsoleHandler());
         logger.setLevel(Level.ALL);
@@ -97,7 +98,7 @@ public class PostmarkClient {
      * @return {@link PostmarkResponse} with details about the transaction
      */
     public PostmarkResponse sendMessage(String from, String to, String replyTo, String cc, String subject, String body, boolean isHTML, String tag) throws PostmarkException {
-        return sendMessage(from, to, replyTo, cc, subject, body, isHTML, tag, null);
+        return sendMessage(from, to, replyTo, cc, null, subject, body, isHTML, tag, null);
     }
 
     /**
@@ -119,8 +120,30 @@ public class PostmarkClient {
      * @return {@link PostmarkResponse} with details about the transaction
      */
     public PostmarkResponse sendMessage(String from, String to, String replyTo, String cc, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) throws PostmarkException {
-        PostmarkMessage message = new PostmarkMessage(from, to, replyTo, subject, cc, body, isHTML, tag, headers);
+        return sendMessage(from, to, replyTo, cc, null, subject, body, isHTML, tag, headers);
+    }
 
+    /**
+     * Sends a message through the Postmark API.
+     * All email addresses must be valid, and the sender must be
+     * a valid sender signature according to Postmark. To obtain a valid
+     * sender signature, log in to Postmark and navigate to:
+     * http://postmarkapp.com/signatures.
+     *
+     * @param from    An email address for a sender
+     * @param to      An email address for a recipient
+     * @param replyTo An email address for the reply-to
+     * @param cc      An email address for CC
+     * @param bcc     An email address for BCC
+     * @param subject The message subject line
+     * @param body    The message body
+     * @param isHTML  Is the body text HTML
+     * @param tag     A tag to identify the message in postmark
+     * @param headers A collection of additional mail headers to send with the message
+     * @return {@link PostmarkResponse} with details about the transaction
+     */
+    public PostmarkResponse sendMessage(String from, String to, String replyTo, String cc, String bcc, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) throws PostmarkException {
+        PostmarkMessage message = new PostmarkMessage(from, to, replyTo, subject, bcc, cc, body, isHTML, tag, headers);
         return sendMessage(message);
     }
 
