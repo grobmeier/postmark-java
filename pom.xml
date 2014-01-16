@@ -22,18 +22,36 @@
    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
    // THE SOFTWARE.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jaredholdcroft.java</groupId>
     <artifactId>postmark-java</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
     <name>postmark-java</name>
     <url>https://github.com/jaredholdcroft/postmark-java</url>
     <description>Java API for sending E-Mails via Postmarkapp</description>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/jaredholdcroft/postmark-java</url>
+        <connection>scm:git:git://github.com/jaredholdcroft/postmark-java.git</connection>
+        <developerConnection>scm:git:git@github.com:jaredholdcroft/postmark-java.git</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <email>jared@theholdcrofts.com</email>
+            <name>Jared Holdcroft</name>
+            <url>https://github.com/jaredholdcroft</url>
+            <id>jaredholdcroft</id>
+        </developer>
+    </developers>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
