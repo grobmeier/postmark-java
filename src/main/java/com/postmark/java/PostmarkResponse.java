@@ -25,19 +25,6 @@ package com.postmark.java;
 import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 
-/**
- * Postmark for Java
- * <p/>
- * This library can be used to leverage the postmarkapp.com functionality from a Java client
- * <p/>
- * http://github.com/jaredholdcroft/postmark-java
- */
-
-// Enum of possible response statuses
-enum PostmarkStatus {
-    UNKNOWN, SUCCESS, USERERROR, SERVERERROR
-}
-
 // Class that wraps the Postmark response
 
 public class PostmarkResponse {
