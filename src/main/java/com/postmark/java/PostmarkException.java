@@ -23,11 +23,7 @@
 package com.postmark.java;
 
 /**
- * Postmark for Java
- * <p/>
- * This library can be used to leverage the postmarkapp.com functionality from a Java client
- * <p/>
- * http://github.com/jaredholdcroft/postmark-java
+ * Postmark API exception, including an API response when available.
  */
 
 public class PostmarkException extends Exception {

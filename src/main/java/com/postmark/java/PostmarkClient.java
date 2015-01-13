@@ -39,15 +39,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Postmark for Java
- * <p/>
- * This library can be used to leverage the postmarkapp.com functionality from a Java client
- * <p/>
- *
- * @see <a href="http://github.com/jaredholdcroft/postmark-java"/>
+ * Class that does the heavy lifting
  */
-
-// Class that does the heavy lifting
 public class PostmarkClient {
 
     private static Logger logger = Logger.getLogger("com.postmark.java");

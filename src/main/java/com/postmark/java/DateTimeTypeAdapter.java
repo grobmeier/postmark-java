@@ -28,11 +28,7 @@ import org.joda.time.DateTime;
 import java.lang.reflect.Type;
 
 /**
- * Postmark for Java
- * <p/>
- * This library can be used to leverage the postmarkapp.com functionality from a Java client
- * <p/>
- * http://github.com/jaredholdcroft/postmark-java
+ * Gson serialization adapter for Joda-Time's {@link org.joda.time.DateTime} class.
  */
 
 public class DateTimeTypeAdapter implements JsonSerializer<DateTime>, JsonDeserializer<DateTime> {

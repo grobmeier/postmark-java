@@ -26,11 +26,8 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 
 /**
- * Postmark for Java
- * <p/>
- * This library can be used to leverage the postmarkapp.com functionality from a Java client
- * <p/>
- * http://github.com/jaredholdcroft/postmark-java
+ * A Gson {@link com.google.gson.ExclusionStrategy} to omit fields marked with
+ * the {@link com.postmark.java.SkipMe} annotation from serialization.
  */
 
 public class SkipMeExclusionStrategy implements ExclusionStrategy {

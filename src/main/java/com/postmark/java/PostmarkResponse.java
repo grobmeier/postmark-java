@@ -25,7 +25,9 @@ package com.postmark.java;
 import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 
-// Class that wraps the Postmark response
+/**
+ * Class that wraps the Postmark response
+ */
 
 public class PostmarkResponse {
 
