@@ -45,6 +45,14 @@ public class PostmarkResponse {
     public String message;
 
     /**
+     * The message ID of the sent message.
+     * This may be used to identify the message to other API endpoints not yet
+     * supported here.
+     */
+    @SerializedName("MessageID")
+    public String messageId;
+
+    /**
      * The time the request was received by Postmark.
      */
     @SerializedName("SubmittedAt")
@@ -110,6 +118,7 @@ public class PostmarkResponse {
         sb.append("{ status=").append(status);
         sb.append(", to='").append(to).append('\'');
         sb.append(", submittedAt='").append(submittedAt).append('\'');
+        sb.append(", messageId='").append(messageId).append('\'');
         sb.append(", errorCode=").append(errorCode);
         sb.append(", message='").append(message).append('\'');
         sb.append('}');
