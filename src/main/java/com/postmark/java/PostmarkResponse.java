@@ -102,4 +102,17 @@ public class PostmarkResponse {
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("PostmarkResponse");
+        sb.append("{ status=").append(status);
+        sb.append(", to='").append(to).append('\'');
+        sb.append(", submittedAt='").append(submittedAt).append('\'');
+        sb.append(", errorCode=").append(errorCode);
+        sb.append(", message='").append(message).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
