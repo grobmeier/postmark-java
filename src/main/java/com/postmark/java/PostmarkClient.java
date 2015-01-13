@@ -165,7 +165,7 @@ public class PostmarkClient {
         try {
 
             // Create post request to Postmark API endpoint
-            HttpPost method = new HttpPost("http://api.postmarkapp.com/email");
+            HttpPost method = new HttpPost("https://api.postmarkapp.com/email");
 
             // Add standard headers required by Postmark
             method.addHeader("Accept", "application/json");
