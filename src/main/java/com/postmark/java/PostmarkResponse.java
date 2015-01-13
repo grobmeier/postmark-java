@@ -31,25 +31,35 @@ import org.joda.time.DateTime;
 
 public class PostmarkResponse {
 
-    // The status outcome of the response.
+    /**
+     * The status outcome of the response.
+     */
     @SerializedName("Status")
     public PostmarkStatus status;
 
-    // The message from the API.
-    // In the event of an error, this message may contain helpful text.
+    /**
+     * The message from the API.
+     * In the event of an error, this message may contain helpful text.
+     */
     @SerializedName("Message")
     public String message;
 
-    // The time the request was received by Postmark.
+    /**
+     * The time the request was received by Postmark.
+     */
     @SerializedName("SubmittedAt")
     public DateTime submittedAt;
 
-    // The recipient of the submitted request.
+    /**
+     * The recipient of the submitted request.
+     */
     @SerializedName("To")
     public String to;
 
-    // The error code returned from Postmark.
-    // This does not map to HTTP status codes.
+    /**
+     * The error code returned from Postmark.
+     * This does not map to HTTP status codes.
+     */
     @SerializedName("ErrorCode")
     public int errorCode;
 
