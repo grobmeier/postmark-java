@@ -50,11 +50,6 @@ v.add(attachment);
 message.setAttachments(v);
 ```
 
-Dependencies:
-
-All dependencies are included in the lib folder
-
-
 ### License:
 
 Copyright (C) 2012 Jared Holdcroft
