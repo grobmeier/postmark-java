@@ -216,7 +216,10 @@ public class PostmarkClient {
                 }
             }
 
-
+        } catch (PostmarkException e) {
+            //Log it and rethrow it, don't wrap it
+            logger.log(Level.SEVERE, "There has been an error sending your email: " + e.getMessage());
+            throw e;
         } catch (Exception e) {
             logger.log(Level.SEVERE, "There has been an error sending your email: " + e.getMessage());
             throw new PostmarkException(e);
