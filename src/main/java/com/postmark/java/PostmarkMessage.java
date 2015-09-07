@@ -34,27 +34,7 @@ import java.util.List;
  * <p/>
  * http://github.com/jaredholdcroft/postmark-java
  */
-public class PostmarkMessage {
-
-    // The sender's email address.
-    @SerializedName("From")
-    private String fromAddress;
-
-    // The recipients's email address.
-    @SerializedName("To")
-    private String toAddress;
-
-    // The email address to reply to. This is optional.
-    @SerializedName("ReplyTo")
-    private String replyToAddress;
-
-    // The email address to carbon copy to. This is optional.
-    @SerializedName("Cc")
-    private String ccAddress;
-
-    // The email address to blind carbon copy to. This is optional.
-    @SerializedName("Bcc")
-    private String bccAddress;
+public class PostmarkMessage extends PostmarkMessageBase {
 
     // The message subject line.
     @SerializedName("Subject")
@@ -68,42 +48,21 @@ public class PostmarkMessage {
     @SerializedName("TextBody")
     private String textBody;
 
-    // An optional tag than can be associated with the email.
-    @SerializedName("Tag")
-    private String tag;
-
-    // A collection of optional message headers.
-    @SerializedName("Headers")
-    private List<NameValuePair> headers;
-
-    @SerializedName("Attachments")
-    private List<Attachment> attachments;
-
     @SkipMe
     private boolean isHTML;
 
-
     public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String bccAddress, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) {
 
+        super(fromAddress, toAddress, replyToAddress, ccAddress, bccAddress, tag,  headers);
+
         this.isHTML = isHTML;
-
-        this.fromAddress = fromAddress;
-        this.toAddress = toAddress;
-        this.replyToAddress = replyToAddress;
-        this.ccAddress = ccAddress;
-        this.bccAddress = bccAddress;
         this.subject = subject;
-
         if (isHTML)
             this.htmlBody = body;
         else
             this.textBody = body;
 
-        this.tag = tag;
-
-        this.headers = (headers == null) ? new ArrayList<NameValuePair>() : headers;
     }
-
 
     public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) {
 
@@ -120,112 +79,18 @@ public class PostmarkMessage {
     }
 
     // Copy Constructor
-
     public PostmarkMessage(PostmarkMessage message) {
-
-        this.fromAddress = message.fromAddress;
-        this.toAddress = message.toAddress;
-        this.replyToAddress = message.replyToAddress;
-        this.ccAddress = message.ccAddress;
-        this.bccAddress = message.bccAddress;
-        this.subject = message.subject;
-
-        this.htmlBody = message.htmlBody;
-        this.textBody = message.textBody;
-
-        this.headers = message.headers;
+        super(message);
 
         this.isHTML = message.isHTML;
-
+        this.subject = message.subject;
+        this.htmlBody = message.htmlBody;
+        this.textBody = message.textBody;
     }
 
     public void clean() {
-        this.fromAddress = this.fromAddress.trim();
-        this.toAddress = this.toAddress.trim();
+        super.clean();
         this.subject = (this.subject == null) ? "" : this.subject.trim();
-    }
-
-    public void validate() throws PostmarkException {
-
-        if ((this.fromAddress == null) || (this.fromAddress.equals(""))) {
-            throw new PostmarkException("You must specify a valid 'From' email address.");
-        }
-        if ((this.toAddress == null) || (this.toAddress.equals(""))) {
-            throw new PostmarkException("You must specify a valid 'To' email address.");
-        }
-
-        // TODO: add more validation using regex
-    }
-
-
-    /**
-     * @return the from email address
-     */
-    public String getFromAddress() {
-        return fromAddress;
-    }
-
-    /**
-     * @param fromAddress The email address the message is sent from
-     */
-    public void setFromAddress(String fromAddress) {
-        this.fromAddress = fromAddress;
-    }
-
-    /**
-     * @return the to email address
-     */
-    public String getToAddress() {
-        return toAddress;
-    }
-
-    /**
-     * @param toAddress The email address the message is sent to
-     */
-    public void setToAddress(String toAddress) {
-        this.toAddress = toAddress;
-    }
-
-    /**
-     * @return the cc email address
-     */
-    public String getCcAddress() {
-        return ccAddress;
-    }
-
-    /**
-     * @param ccAddress The email address the message is sent to
-     */
-    public void setCcAddress(String ccAddress) {
-        this.ccAddress = ccAddress;
-    }
-
-    /**
-     * @return the bcc email address
-     */
-    public String getBccAddress() {
-        return bccAddress;
-    }
-
-    /**
-     * @param bccAddress The email address a blind carbon copy of the message is sent to
-     */
-    public void setBccAddress(String bccAddress) {
-        this.bccAddress = bccAddress;
-    }
-
-    /**
-     * @return the reply-to email address
-     */
-    public String getReplyToAddress() {
-        return replyToAddress;
-    }
-
-    /**
-     * @param replyToAddress The reply-to email address of the message
-     */
-    public void setReplyToAddress(String replyToAddress) {
-        this.replyToAddress = replyToAddress;
     }
 
     /**
@@ -268,47 +133,6 @@ public class PostmarkMessage {
      */
     public void setTextBody(String textBody) {
         this.textBody = textBody;
-    }
-
-    /**
-     * @return the tag (an optional category) that is associated with this mail
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * @param tag The tag (an optional category) that is associated with this mail
-     */
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    /**
-     * @return the email headers
-     */
-    public List<NameValuePair> getHeaders() {
-        return headers;
-    }
-
-    /**
-     * @param headers A map of all the email headers
-     */
-    public void setHeaders(List<NameValuePair> headers) {
-        this.headers = headers;
-    }
-
-    public List<Attachment> getAttachments() {
-        return attachments;
-    }
-
-    /**
-     * Lets you attach file. See {@link Attachment} for details.
-     *
-     * @param attachments list of attachments
-     */
-    public void setAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
     }
 
     @Override
