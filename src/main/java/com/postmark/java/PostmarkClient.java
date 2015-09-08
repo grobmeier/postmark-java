@@ -226,7 +226,10 @@ public class PostmarkClient {
                 theResponse = gsonBuilder.create().fromJson(response, PostmarkResponse.class);
                 theResponse.status = PostmarkStatus.SUCCESS;
             } catch (HttpResponseException hre) {
+                logger.log(Level.SEVERE, ""+hre.getStatusCode());
+                logger.log(Level.SEVERE, ""+hre.getMessage());
                 switch(hre.getStatusCode()) {
+
                     case 401:
                     case 422:
                         logger.log(Level.SEVERE, "There was a problem with the email: " + hre.getMessage());
@@ -243,7 +246,6 @@ public class PostmarkClient {
                         theResponse.status = PostmarkStatus.UNKNOWN;
                         theResponse.setMessage(hre.getMessage());
                         throw new PostmarkException(hre.getMessage(), theResponse);
-
                 }
             }
 

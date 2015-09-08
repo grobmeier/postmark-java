@@ -24,6 +24,17 @@ package com.postmark.java;
 
 import java.util.*;
 
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.google.gson.annotations.SerializedName;
+
+import static org.hamcrest.Matchers.*;
 /**
  * Postmark for Java
  * <p/>
@@ -31,38 +42,64 @@ import java.util.*;
  * <p/>
  * http://github.com/jaredholdcroft/postmark-java
  */
-
 public class TestClient {
 
-    public static void main(String[] args)
+    String apiKey = "POSTMARK_API_TEST";
+
+    @Test
+    public void testMessage() throws Exception
     {
         List<NameValuePair> headers = new ArrayList<NameValuePair>();
-
         headers.add(new NameValuePair("HEADER", "test"));
 
-        PostmarkMessage message = new PostmarkMessage(args[0],
-                args[1],
-                args[0],
-                args[2],
-                args[3],
-                args[4],
-                args[5],
-                false,
-                args[6],
-                headers);
+        PostmarkMessage message = new PostmarkMessage(
+                "team@company.com",
+                "user@email.com",
+                null,
+                null,
+                null,
+                "Test Subject",
+                "<h1>Test heading</h1>",
+                true,
+                null,
+                null);
 
-
-        String apiKey = "POSTMARK_API_TEST";
-        if(args[7] != null)
-            apiKey = args[7];
-            
 
         PostmarkClient client = new PostmarkClient(apiKey);
 
-        try {
-            client.sendMessage(message);
-        } catch (PostmarkException pe) {
-            System.out.println("An error has occurred : " + pe.getMessage());
-        }
+        client.sendMessage(message);
+    }
+
+    //@Test , disabled until Postmark enables testing against their email/withTemplate endpoint
+    public void testTemplate() throws Exception
+    {
+        List<NameValuePair> headers = new ArrayList<NameValuePair>();
+        headers.add(new NameValuePair("HEADER", "test"));
+
+        PostmarkTemplate pTemplate = new PostmarkTemplate(
+            "team@company.com",
+            "user@email.com",
+            null,
+            null,
+            null,
+            null,
+            headers,
+            1,
+            new TestModel(),
+            true
+        );
+
+        PostmarkClient client = new PostmarkClient(apiKey);
+
+        client.sendMessage(pTemplate);
+    }
+
+    public static class TestModel implements TemplateModel
+    {
+        @SerializedName("name")
+        public String name = "Mary";
+
+        @SerializedName("help_url")
+        public String helpUrl = "https://postmarkapp.com";
     }
 }

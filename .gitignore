@@ -14,5 +14,4 @@
 *.iml
 
 target
-src/main/java/com/postmark/java/TestClient.java
 NOTES.md
