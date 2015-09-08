@@ -226,8 +226,6 @@ public class PostmarkClient {
                 theResponse = gsonBuilder.create().fromJson(response, PostmarkResponse.class);
                 theResponse.status = PostmarkStatus.SUCCESS;
             } catch (HttpResponseException hre) {
-                logger.log(Level.SEVERE, ""+hre.getStatusCode());
-                logger.log(Level.SEVERE, ""+hre.getMessage());
                 switch(hre.getStatusCode()) {
 
                     case 401:
