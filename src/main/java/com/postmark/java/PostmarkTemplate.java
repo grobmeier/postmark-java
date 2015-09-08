@@ -1,6 +1,6 @@
 // The MIT License
 //
-// Copyright (c) 2010 Jared Holdcroft
+// Copyright (c) 2015 Micheal Swiggs
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Wrapper class for a Postmark message.
@@ -34,105 +35,85 @@ import java.util.List;
  * <p/>
  * http://github.com/jaredholdcroft/postmark-java
  */
-public class PostmarkMessage extends PostmarkMessageBase {
+public class PostmarkTemplate extends PostmarkMessageBase
+{
 
-    // The message subject line.
-    @SerializedName("Subject")
-    private String subject;
+    //Required, refers to the template to use.
+    @SerializedName("TemplateId")
+    private int templateId;
 
-    // The message body, if the message contains HTML.
-    @SerializedName("HtmlBody")
-    private String htmlBody;
+    //Required, the model to be applied to the template to generate HtmlBody, TextBody and Subject.
+    @SerializedName("TemplateModel")
+    private TemplateModel templateModel;
 
-    // The message body, if the message is plain text.
-    @SerializedName("TextBody")
-    private String textBody;
 
-    @SkipMe
-    private boolean isHTML;
+    //Optional, default true, if styling should be applied as inline css.
+    @SerializedName("InlineCss")
+    private boolean inlineCss;
 
-    public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String bccAddress, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) {
 
+    public PostmarkTemplate(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String bccAddress, String tag, List<NameValuePair> headers, int templateId, TemplateModel templateModel, boolean inlineCss) {
         super(fromAddress, toAddress, replyToAddress, ccAddress, bccAddress, tag,  headers);
 
-        this.isHTML = isHTML;
-        this.subject = subject;
-        if (isHTML)
-            this.htmlBody = body;
-        else
-            this.textBody = body;
-
+        this.templateId = templateId;
+        this.templateModel = templateModel;
+        this.inlineCss = inlineCss;
     }
 
-    public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String subject, String body, boolean isHTML, String tag, List<NameValuePair> headers) {
-
-        this(fromAddress, toAddress, replyToAddress, ccAddress, null, subject, body, isHTML, tag, headers);
-
+    public PostmarkTemplate(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String tag, List<NameValuePair> headers, int templateId, TemplateModel templateModel, boolean inlineCss) {
+        this(fromAddress, toAddress, replyToAddress, ccAddress, null, tag, headers, templateId, templateModel, inlineCss);
     }
 
 
 
-    public PostmarkMessage(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String subject, String body, boolean isHTML, String tag) {
-
-        this(fromAddress, toAddress, replyToAddress, ccAddress, null, subject, body, isHTML, tag, null);
-
-    }
-
-    // Copy Constructor
-    public PostmarkMessage(PostmarkMessage message) {
-        super(message);
-
-        this.isHTML = message.isHTML;
-        this.subject = message.subject;
-        this.htmlBody = message.htmlBody;
-        this.textBody = message.textBody;
+    public PostmarkTemplate(String fromAddress, String toAddress, String replyToAddress, String ccAddress, String tag, int templateId, TemplateModel templateModel, boolean inlineCss) {
+        this(fromAddress, toAddress, replyToAddress, ccAddress, null, tag, null, templateId, templateModel, inlineCss);
     }
 
     public void clean() {
         super.clean();
-        this.subject = (this.subject == null) ? "" : this.subject.trim();
     }
 
     /**
-     * @return the email subject
+     * @return the template id.
      */
-    public String getSubject() {
-        return subject;
+    public int getTemplateId() {
+        return templateId;
     }
 
     /**
-     * @param subject The email subject
+     * @param templateId The template id to render the email.
      */
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setTemplateId(int templateId) {
+        this.templateId = templateId;
     }
 
     /**
-     * @return the body of a HTML message
+     * @return the template model.
      */
-    public String getHtmlBody() {
-        return htmlBody;
+    public TemplateModel getTemplateModel() {
+        return templateModel;
     }
 
     /**
-     * @param htmlBody The HTML body content of the message
+     * @param templateModel the template model
      */
-    public void setHtmlBody(String htmlBody) {
-        this.htmlBody = htmlBody;
+    public void setTemplateModel (TemplateModel templateModel) {
+        this.templateModel = templateModel;
     }
 
     /**
-     * @return the body of a plain text message
+     * @return if email styling should be inlined CSS.
      */
-    public String getTextBody() {
-        return textBody;
+    public boolean getInlineCss() {
+        return inlineCss;
     }
 
     /**
-     * @param textBody The plain text body content of the message
+     * @param inlineCss set if email styling should be inlined CSS.
      */
-    public void setTextBody(String textBody) {
-        this.textBody = textBody;
+    public void setInlineCss(boolean inlineCss) {
+        this.inlineCss = inlineCss;
     }
 
     @Override
@@ -140,20 +121,20 @@ public class PostmarkMessage extends PostmarkMessageBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PostmarkMessage that = (PostmarkMessage) o;
+        PostmarkTemplate that = (PostmarkTemplate) o;
 
         if (ccAddress != null ? !ccAddress.equals(that.ccAddress) : that.ccAddress != null) return false;
         if (bccAddress != null ? !bccAddress.equals(that.bccAddress) : that.bccAddress != null) return false;
         if (fromAddress != null ? !fromAddress.equals(that.fromAddress) : that.fromAddress != null) return false;
-        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
-        if (htmlBody != null ? !htmlBody.equals(that.htmlBody) : that.htmlBody != null) return false;
-        if (replyToAddress != null ? !replyToAddress.equals(that.replyToAddress) : that.replyToAddress != null)
-            return false;
-        if (subject != null ? !subject.equals(that.subject) : that.subject != null) return false;
-        if (textBody != null ? !textBody.equals(that.textBody) : that.textBody != null) return false;
         if (toAddress != null ? !toAddress.equals(that.toAddress) : that.toAddress != null) return false;
         if (tag != null ? !tag.equals(that.toAddress) : that.tag != null) return false;
-        if (isHTML != that.isHTML) return false;
+        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
+        if (replyToAddress != null ? !replyToAddress.equals(that.replyToAddress) : that.replyToAddress != null) return false;
+
+        if (templateId != that.templateId) return false;
+        if (inlineCss != that.inlineCss) return false;
+
+        //Need a check for templateModel
 
         return true;
     }
@@ -165,34 +146,32 @@ public class PostmarkMessage extends PostmarkMessageBase {
         result = 31 * result + (ccAddress != null ? ccAddress.hashCode() : 0);
         result = 31 * result + (bccAddress != null ? bccAddress.hashCode() : 0);
         result = 31 * result + (replyToAddress != null ? replyToAddress.hashCode() : 0);
-        result = 31 * result + (subject != null ? subject.hashCode() : 0);
-        result = 31 * result + (htmlBody != null ? htmlBody.hashCode() : 0);
-        result = 31 * result + (textBody != null ? textBody.hashCode() : 0);
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
         result = 31 * result + (headers != null ? headers.hashCode() : 0);
+
+        result = 31 * result + (templateModel != null ? templateModel.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("PostmarkMessage");
+        sb.append("PostmarkTemplate");
         sb.append("{ fromAddress='").append(fromAddress).append('\'');
         sb.append(", toAddress='").append(toAddress).append('\'');
         sb.append(", ccAddress='").append(ccAddress).append('\'');
         sb.append(", bccAddress='").append(bccAddress).append('\'');
         sb.append(", replyToAddress='").append(replyToAddress).append('\'');
-        sb.append(", subject='").append(subject).append('\'');
 
-        sb.append(", htmlBody='").append(htmlBody).append('\'');
-        sb.append(", textBody='").append(textBody).append('\'');
+        sb.append(", templateId=").append(templateId);
+        sb.append(", templateModel='").append(templateModel).append('\'');
+        sb.append(", inlineCss=").append(inlineCss);
 
         sb.append(", tag='").append(tag).append('\'');
         sb.append(", headers=").append(headers);
         sb.append('}');
         return sb.toString();
     }
-
 
 }
 
