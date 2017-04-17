@@ -45,6 +45,7 @@ public class PostmarkClient {
 
     private static Logger logger = Logger.getLogger("com.postmark.java");
     private String serverToken;
+    private String serverPath;
 
     private static GsonBuilder gsonBuilder = new GsonBuilder();
 
@@ -68,9 +69,21 @@ public class PostmarkClient {
      * @param serverToken the postmark server token
      */
     public PostmarkClient(String serverToken) {
+        this(serverToken, "http://api.postmarkapp.com");
+    }
 
+    /**
+     * Initializes a new instance of the PostmarkClient class.
+     * <p/>
+     * If you do not have a server token you can request one by signing up to
+     * use Postmark: http://postmarkapp.com.
+     *
+     * @param serverToken the postmark server token
+     * @param serverPath an alternative server path e.g https://api.postmarkapp.com
+     */
+    public PostmarkClient(String serverToken, String serverPath) {
         this.serverToken = serverToken;
-
+        this.serverPath = serverPath;
     }
 
     /**
@@ -141,6 +154,20 @@ public class PostmarkClient {
     }
 
     /**
+     * Sends a template message through the Postmark API.
+     * All email addresses must be valid, and the sender must be
+     * a valid sender signature according to Postmark. To obtain a valid
+     * sender signature, log in to Postmark and navigate to:
+     * http://postmarkapp.com/signatures.
+     *
+     * @param templateMessage A prepared template message instance.</param>
+     * @return A response object
+     */
+    public PostmarkResponse sendMessage(PostmarkTemplate templateMessage) throws PostmarkException {
+        return sendPostmarkMessage("/email/withTemplate", templateMessage);
+    }
+
+    /**
      * Sends a message through the Postmark API.
      * All email addresses must be valid, and the sender must be
      * a valid sender signature according to Postmark. To obtain a valid
@@ -151,6 +178,10 @@ public class PostmarkClient {
      * @return A response object
      */
     public PostmarkResponse sendMessage(PostmarkMessage message) throws PostmarkException {
+        return sendPostmarkMessage("/email", message);
+    }
+
+    private PostmarkResponse sendPostmarkMessage(String endpoint, PostmarkMessageBase message ) throws PostmarkException {
 
         HttpClient httpClient = new DefaultHttpClient();
         PostmarkResponse theResponse = new PostmarkResponse();
@@ -158,7 +189,7 @@ public class PostmarkClient {
         try {
 
             // Create post request to Postmark API endpoint
-            HttpPost method = new HttpPost("https://api.postmarkapp.com/email");
+            HttpPost method = new HttpPost(serverPath+endpoint);
 
             // Add standard headers required by Postmark
             method.addHeader("Accept", "application/json");
@@ -189,6 +220,7 @@ public class PostmarkClient {
                 theResponse.status = PostmarkStatus.SUCCESS;
             } catch (HttpResponseException hre) {
                 switch(hre.getStatusCode()) {
+
                     case 401:
                     case 422:
                         logger.log(Level.SEVERE, "There was a problem with the email: " + hre.getMessage());
@@ -205,7 +237,6 @@ public class PostmarkClient {
                         theResponse.status = PostmarkStatus.UNKNOWN;
                         theResponse.setMessage(hre.getMessage());
                         throw new PostmarkException(hre.getMessage(), theResponse);
-
                 }
             }
 
@@ -224,6 +255,4 @@ public class PostmarkClient {
 
         return theResponse;
     }
-
-
 }
