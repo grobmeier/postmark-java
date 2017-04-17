@@ -31,17 +31,25 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Class that does the heavy lifting
  */
 public class PostmarkClient {
+
+    public static final String API_ENDPOINT = "https://api.postmarkapp.com";
 
     private static Logger logger = Logger.getLogger("com.postmark.java");
     private String serverToken;
@@ -69,7 +77,7 @@ public class PostmarkClient {
      * @param serverToken the postmark server token
      */
     public PostmarkClient(String serverToken) {
-        this(serverToken, "http://api.postmarkapp.com");
+        this(serverToken, API_ENDPOINT);
     }
 
     /**
