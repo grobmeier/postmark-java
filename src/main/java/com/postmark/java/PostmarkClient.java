@@ -24,6 +24,9 @@ package com.postmark.java;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -218,9 +221,26 @@ public class PostmarkClient {
             StringEntity payload = new StringEntity(messageContents, "UTF-8");
             method.setEntity(payload);
 
+            ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                @Override
+                public String handleResponse(
+                        final HttpResponse response) throws IOException {
+                    int status = response.getStatusLine().getStatusCode();
+                    HttpEntity entity = response.getEntity();
+                    if (status >= 200 && status < 300) {
+                        return entity != null ? EntityUtils.toString(entity) : null;
+                    } else {
+                        Scanner s = new Scanner(entity.getContent()).useDelimiter("\\A");
+                        String result = s.hasNext() ? s.next() : "";
+                        // Output body in case of trouble for further debugging
+                        logger.warning(result);
 
+                        throw new ClientProtocolException("Unexpected response status: " + status);
+                    }
+                }
+            };
+            
             try {
                 String response = httpClient.execute(method, responseHandler);
                 logger.info("Message response: " + response);
