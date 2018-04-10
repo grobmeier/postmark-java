@@ -1,6 +1,10 @@
 README
 ======
 
+PLEASE USE THE OFFICIAL LIBRARY: https://github.com/wildbit/postmark-java
+This fork is no longer maintained.
+
+
 This library allows you to leverage the Postmark REST API to send emails.
 
 Example usage:
